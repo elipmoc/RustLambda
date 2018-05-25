@@ -40,45 +40,73 @@ fn show_apply(left: &Box<Expr>, right: &Box<Expr>) -> String {
 <paren>:= '(' <expr> ')'
 
  */
+parser!{
+    fn expr_parser[I]()(I) -> Expr
+    where [I: Stream<Item=char>]
+    {
+        apply_parser()
+    }
+}
+
+parser!{
+    fn apply_parser[I]()(I) -> Expr
+    where [I: Stream<Item=char>]
+    {
+        (term_parser(),many::<Vec<Expr>,_>(char(' ').with(term_parser()))).then(
+            |(first_expr,tail_exprs)|{
+                let mut expr = first_expr;
+                for tail_expr in tail_exprs {
+                    expr=Expr::Apply(Box::new(expr),Box::new(tail_expr))
+                }
+                value(expr)
+            }
+        )
+    }
+}
+
+parser!{
+    fn def_parser[I]()(I) -> Expr
+    where [I: Stream<Item=char>]
+    {
+        char('λ').with( (id_parser(),char('.').with(expr_parser())) )
+            .then(
+                |(s,body)|value(Expr::Def(s,Box::new(body)))
+            )
+    }
+}
+
+parser!{
+    fn term_parser[I]()(I) -> Expr
+    where [I: Stream<Item=char>]
+    {
+        id_parser().then( |s|value(Expr::Id(s)) ).or(paren_parser()).or(def_parser())
+    }
+}
 
 parser!{
     fn id_parser[I]()(I) -> String
     where [I: Stream<Item=char>]
     {
         let head_id_parser = not_followed_by(char('λ').or(digit())).with(letter());
-        let id_parser = (head_id_parser,many::<String, _>(letter().or(digit())))
-            .then(|(head,tails):(char,String)| value(head.to_string()+&tails));
-        id_parser
+        (head_id_parser,many::<String, _>(letter().or(digit())))
+            .then(|(head,tails):(char,String)| value(head.to_string()+&tails))
     }
 }
-/*
-parser!{
-    fn apply_parser[I]()(I) -> Expr
-    where [I: Stream<Item=char>]
-    {
-        let head_id_parser = not_followed_by(char('λ').or(digit())).with(letter());
-        let id_parser = (head_id_parser,many::<String, _>(letter().or(digit())))
-            .then(|(head,tails):(char,String)| value(head.to_string()+&tails));
-        id_parser
-    }
-}
-*/
-parser!{
-    fn expr_parser[I]()(I) -> Expr
-    where [I: Stream<Item=char>]
-    {
 
-        let def_parser=char('λ').with( (id_parser(),char('.').with(expr_parser())) )
-            .then(|(s,body)|value(Expr::Def(s,Box::new(body))));
-       /* let apply_parser=
-            (expr_parser(),expr_parser()).then(|(left,right)|value(Expr::Apply(Box::new(left),Box::new(right)) ));
-        id_parser.or(apply_parser)*/
-        def_parser.or(id_parser().then(|s|value(Expr::Id(s))))
+parser!{
+    fn paren_parser[I]()(I) -> Expr
+    where [I: Stream<Item=char>]
+    {
+        char('(').with(expr_parser()).skip(char(')'))
     }
 }
 
 fn expr_parse(s: &str) {
     println!("{:?}", expr_parser().parse(s));
+    match expr_parser().parse(s) {
+        Ok((value, _)) => println!("{}", show_expr(&value)),
+        Err(_) => (),
+    };
 }
 
 fn main() {
