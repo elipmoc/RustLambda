@@ -1,0 +1,7 @@
+[package]
+name = "rustλ"
+version = "0.1.0"
+authors = ["パン粉 ライ麦 <relipmoc101@gmail.com>"]
+
+[dependencies]
+combine = "3.3.0"
