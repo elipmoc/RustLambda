@@ -17,11 +17,11 @@ fn main() {
         //パース
         let expr = lambda_parse(s);
         //パース結果を表示
-        println!("ParseResult: {:?}", expr);
+        //println!("ParseResult: {:?}", expr);
         match expr {
             //パースしたASTが示すラムダ計算を表示
             Ok((value, _)) => {
-                println!("show: {}", value.show());
+                //  println!("show: {}", value.show());
                 println!("beta convert: {}", value.beta_convert().show());
             }
             Err(_) => (),
