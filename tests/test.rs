@@ -17,4 +17,8 @@ fn beta_convert_test() {
     beta_convert_eq("λx.λy.λz.x z (y z)", "λx.λy.λz.x z (y z)");
     beta_convert_eq("(λx.λy.λz.x z (y z)) a b c", "a c (b c)");
     beta_convert_eq("(λx.x) λz.λy.z", "λz.λy.z");
+    beta_convert_eq(
+        "(λa.λb.λf.λx.a f (b f x)) (λf.λx.f x) (λf.λx.f (f x))",
+        "λf.λx.f (f (f x))",
+    );
 }

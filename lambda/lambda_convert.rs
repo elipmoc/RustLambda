@@ -5,14 +5,16 @@ impl LambdaAST {
     pub fn beta_convert(&self) -> LambdaAST {
         match self {
             LambdaAST::Id(_) => self.clone(),
-            LambdaAST::Def(_, _) => self.clone(),
+            LambdaAST::Def(param, body) => {
+                LambdaAST::Def(param.to_string(), Box::new(body.beta_convert()))
+            }
             LambdaAST::Apply(left, right) => {
                 let left = left.beta_convert();
                 let right = right.beta_convert();
                 match left {
                     LambdaAST::Id(_) => LambdaAST::Apply(Box::new(left), Box::new(right)),
                     LambdaAST::Apply(_, _) => LambdaAST::Apply(Box::new(left), Box::new(right)),
-                    LambdaAST::Def(param, body) => body.replace_id(&param, &right),
+                    LambdaAST::Def(param, body) => body.replace_id(&param, &right).beta_convert(),
                 }
             }
         }
