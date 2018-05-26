@@ -3,7 +3,6 @@ extern crate combine;
 mod lambda_ast;
 mod lambda_convert;
 mod lambda_parser;
-use lambda_convert::beta_convert;
 use lambda_parser::lambda_parse;
 use std::io;
 
@@ -23,7 +22,7 @@ fn main() {
             //パースしたASTが示すラムダ計算を表示
             Ok((value, _)) => {
                 println!("show: {}", value.show());
-                println!("beta convert: {}", beta_convert(&value).show());
+                println!("beta convert: {}", value.beta_convert().show());
             }
             Err(_) => (),
         };
