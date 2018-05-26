@@ -3,5 +3,9 @@ name = "rustλ"
 version = "0.1.0"
 authors = ["パン粉 ライ麦 <relipmoc101@gmail.com>"]
 
+[lib]
+name="lambda"
+path="lambda/lib.rs"
+
 [dependencies]
 combine = "3.3.0"

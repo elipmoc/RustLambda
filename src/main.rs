@@ -1,9 +1,5 @@
-#[macro_use]
-extern crate combine;
-mod lambda_ast;
-mod lambda_convert;
-mod lambda_parser;
-use lambda_parser::lambda_parse;
+extern crate lambda;
+use lambda::lambda_parser::lambda_parse;
 use std::io;
 
 fn main() {
