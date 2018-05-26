@@ -20,6 +20,8 @@ impl LambdaAST {
         }
     }
 
+    //関数をα変換する
+    //λx.x → λx`.x`
     fn alpha_convert(&self) -> LambdaAST {
         match self {
             LambdaAST::Def(param, body) => {
