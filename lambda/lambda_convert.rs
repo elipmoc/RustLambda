@@ -55,7 +55,7 @@ impl LambdaAST {
         match self {
             LambdaAST::Id(x) if x == id => replace_ast.clone(),
             LambdaAST::Id(_) => self.clone(),
-            LambdaAST::Def(param, body) if param == id => self.clone(),
+            LambdaAST::Def(param, _) if param == id => self.clone(),
             LambdaAST::Def(param, body) => match replace_ast {
                 LambdaAST::Id(x) if param == x => self.alpha_convert().replace_id(id, replace_ast),
                 _ => LambdaAST::Def(
