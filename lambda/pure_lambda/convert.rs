@@ -1,4 +1,4 @@
-use pure_lambda_ast::PureLambdaAST;
+use pure_lambda::ast::PureLambdaAST;
 
 impl PureLambdaAST {
     //β簡約する

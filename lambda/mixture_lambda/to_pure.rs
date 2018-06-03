@@ -1,17 +1,17 @@
-use lambda_ast::LambdaAST;
-use pure_lambda_ast::PureLambdaAST;
+use mixture_lambda::ast::MixtureLambdaAST;
+use pure_lambda::ast::PureLambdaAST;
 
-impl LambdaAST {
+impl MixtureLambdaAST {
     pub fn to_pure_ast(&self) -> PureLambdaAST {
         match self {
-            LambdaAST::Id(id) => PureLambdaAST::Id(id.to_string()),
-            LambdaAST::Apply(left, right) => {
+            MixtureLambdaAST::Id(id) => PureLambdaAST::Id(id.to_string()),
+            MixtureLambdaAST::Apply(left, right) => {
                 PureLambdaAST::Apply(Box::new(left.to_pure_ast()), Box::new(right.to_pure_ast()))
             }
-            LambdaAST::Def(id, body) => {
+            MixtureLambdaAST::Def(id, body) => {
                 PureLambdaAST::Def(id.to_string(), Box::new(body.to_pure_ast()))
             }
-            LambdaAST::S => PureLambdaAST::Def(
+            MixtureLambdaAST::S => PureLambdaAST::Def(
                 "x".to_string(),
                 Box::new(PureLambdaAST::Def(
                     "y".to_string(),
@@ -30,14 +30,14 @@ impl LambdaAST {
                     )),
                 )),
             ),
-            LambdaAST::K => PureLambdaAST::Def(
+            MixtureLambdaAST::K => PureLambdaAST::Def(
                 "x".to_string(),
                 Box::new(PureLambdaAST::Def(
                     "y".to_string(),
                     Box::new(PureLambdaAST::Id("x".to_string())),
                 )),
             ),
-            LambdaAST::I => PureLambdaAST::Def(
+            MixtureLambdaAST::I => PureLambdaAST::Def(
                 "x".to_string(),
                 Box::new(PureLambdaAST::Id("x".to_string())),
             ),

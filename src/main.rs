@@ -1,5 +1,5 @@
 extern crate lambda;
-use lambda::lambda_parser::lambda_parse;
+use lambda::mixture_lambda::parser::lambda_parse;
 use std::io;
 
 fn main() {
