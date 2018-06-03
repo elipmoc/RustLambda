@@ -1,4 +1,5 @@
-use lambda_trait::LambdaAST;
+use lambda_trait::{LambdaAST, LambdaASTConvert};
+use mixture_lambda::ast::MixtureLambdaAST;
 
 //純粋なラムダ計算のAST
 #[derive(Debug, Clone)]
@@ -15,5 +16,9 @@ impl LambdaAST for PureLambdaAST {
 
     fn to_pure(&self) -> PureLambdaAST {
         self.clone()
+    }
+
+    fn to_ski(&self) -> MixtureLambdaAST {
+        MixtureLambdaAST::convert(&self).to_ski()
     }
 }

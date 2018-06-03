@@ -20,7 +20,7 @@ fn main() {
             Ok((value, _)) => {
                 //  println!("show: {}", value.show());
                 let beta_convert = value.reduction();
-                let to_ski = beta_convert.to_mixture_lambda().to_ski();
+                let to_ski = beta_convert.to_ski();
                 let to_pure = to_ski.to_pure();
                 let beta_convert2 = to_pure.reduction();
                 println!("beta convert: {}", beta_convert.show());

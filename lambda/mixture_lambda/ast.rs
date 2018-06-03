@@ -1,4 +1,4 @@
-use lambda_trait::LambdaAST;
+use lambda_trait::{LambdaAST, LambdaASTConvert};
 use pure_lambda::ast::PureLambdaAST;
 
 //ラムダ計算のAST
@@ -22,7 +22,13 @@ impl LambdaAST for MixtureLambdaAST {
         self.to_pure_ast()
     }
 
-    fn to_mixture_lambda(&self) -> MixtureLambdaAST {
-        self.clone()
+    fn to_ski(&self) -> MixtureLambdaAST {
+        self.to_ski_ast()
+    }
+}
+
+impl LambdaASTConvert<PureLambdaAST> for MixtureLambdaAST {
+    fn convert(ast: &PureLambdaAST) -> Self {
+        ast.to_lambda_ast()
     }
 }
