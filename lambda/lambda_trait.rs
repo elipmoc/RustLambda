@@ -8,7 +8,7 @@ pub trait LambdaAST {
         self.to_pure().to_lambda_ast()
     }
     fn to_ski(&self) -> MixtureLambdaAST {
-        self.to_mixture_lambda().to_ski()
+        self.to_mixture_lambda().to_ski_ast()
     }
     fn reduction(&self) -> PureLambdaAST {
         self.to_pure().beta_convert()
