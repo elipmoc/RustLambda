@@ -1,4 +1,5 @@
 pub mod ast;
 pub mod parser;
+mod show;
 pub mod to_pure;
-pub mod to_ski;
+mod to_ski;

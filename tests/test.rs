@@ -1,10 +1,11 @@
 extern crate lambda;
 
-use lambda::lambda_parser::lambda_parse;
+use lambda::lambda_trait::LambdaAST;
+use lambda::mixture_lambda::parser::lambda_parse;
 
 fn beta_convert_eq(from: &str, to: &str) {
     match lambda_parse(from) {
-        Ok((ast, _)) => assert_eq!(ast.to_pure_ast().beta_convert().to_lambda_ast().show(), to),
+        Ok((ast, _)) => assert_eq!(ast.reduction().show(), to),
         Err(_) => assert!(false),
     }
 }
