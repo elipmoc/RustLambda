@@ -4,6 +4,9 @@ pub enum LambdaAST {
     Def(String, Box<LambdaAST>),
     Apply(Box<LambdaAST>, Box<LambdaAST>),
     Id(String),
+    S,
+    K,
+    I,
 }
 
 impl LambdaAST {
@@ -13,6 +16,9 @@ impl LambdaAST {
             LambdaAST::Def(arg_name, body) => show_def(arg_name, body),
             LambdaAST::Apply(left, right) => show_apply(&left, &right),
             LambdaAST::Id(name) => name.to_string(),
+            LambdaAST::S => "S".to_string(),
+            LambdaAST::K => "K".to_string(),
+            LambdaAST::I => "I".to_string(),
         }
     }
 }

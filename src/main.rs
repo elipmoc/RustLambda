@@ -18,7 +18,14 @@ fn main() {
             //パースしたASTが示すラムダ計算を表示
             Ok((value, _)) => {
                 //  println!("show: {}", value.show());
-                println!("beta convert: {}", value.beta_convert().show());
+                let beta_convert = value.to_pure_ast().beta_convert().to_lambda_ast();
+                let to_ski = beta_convert.to_ski_ast();
+                let to_pure = to_ski.to_pure_ast();
+                let beta_convert2 = to_pure.beta_convert().to_lambda_ast();
+                println!("beta convert: {}", beta_convert.show());
+                println!("to_ski: {}", to_ski.show());
+                println!("to_pure: {}", to_pure.to_lambda_ast().show());
+                println!("beta convert2: {}", beta_convert2.show());
             }
             Err(_) => (),
         };

@@ -1,11 +1,10 @@
 extern crate lambda;
 
 use lambda::lambda_parser::lambda_parse;
-use lambda::ski_ast::SkiAST;
 
 fn beta_convert_eq(from: &str, to: &str) {
     match lambda_parse(from) {
-        Ok((ast, _)) => assert_eq!(ast.beta_convert().show(), to),
+        Ok((ast, _)) => assert_eq!(ast.to_pure_ast().beta_convert().to_lambda_ast().show(), to),
         Err(_) => assert!(false),
     }
 }
@@ -21,21 +20,5 @@ fn beta_convert_test() {
     beta_convert_eq(
         "(λa.λb.λf.λx.a f (b f x)) (λf.λx.f x) (λf.λx.f (f x))",
         "λf.λx.f (f (f x))",
-    );
-}
-
-#[test]
-fn ski_ast_show_test() {
-    assert_eq!(SkiAST::I.show(), "I");
-    assert_eq!(
-        SkiAST::Apply(Box::new(SkiAST::S), Box::new(SkiAST::K)).show(),
-        "S K"
-    );
-    assert_eq!(
-        SkiAST::Apply(
-            Box::new(SkiAST::S),
-            Box::new(SkiAST::Apply(Box::new(SkiAST::I), Box::new(SkiAST::S)))
-        ).show(),
-        "S (I S)"
     );
 }
